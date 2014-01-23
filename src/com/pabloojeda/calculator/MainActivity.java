@@ -38,6 +38,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	ArrayList<String> pilaOp = new ArrayList<String>();
     ArrayList<String> pilaNum = new ArrayList<String>();
     String value = ""; // Last value inserted completely, not parcially
+    boolean jump = false;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,6 @@ public class MainActivity extends Activity implements OnClickListener {
         findViewById(R.id.buttonSubtract).setOnClickListener(this);
         findViewById(R.id.buttonMultiply).setOnClickListener(this);
         findViewById(R.id.buttonDivide).setOnClickListener(this);
-        findViewById(R.id.buttonToggleSign).setOnClickListener(this);
         findViewById(R.id.buttonDecimalPoint).setOnClickListener(this);
         findViewById(R.id.buttonEquals).setOnClickListener(this);
         findViewById(R.id.buttonClear).setOnClickListener(this);
@@ -69,15 +69,6 @@ public class MainActivity extends Activity implements OnClickListener {
  
         // The following buttons only exist in layout-land (Landscape mode) and require extra attention.
         // The messier option is to place the buttons in the regular layout too and set android:visibility="invisible".
-        //if (findViewById(R.id.buttonSquareRoot) != null) {
-        //    findViewById(R.id.buttonSquareRoot).setOnClickListener(this);
-        //}
-        if (findViewById(R.id.buttonSquared) != null) {
-            findViewById(R.id.buttonSquared).setOnClickListener(this);
-        }
-        //if (findViewById(R.id.buttonInvert) != null) {
-        //    findViewById(R.id.buttonInvert).setOnClickListener(this);
-        //}
         if (findViewById(R.id.buttonSine) != null) {
             findViewById(R.id.buttonSine).setOnClickListener(this);
         }
@@ -133,7 +124,69 @@ public class MainActivity extends Activity implements OnClickListener {
         		userIsInTheMiddleOfTypingANumber = false;
         	}
         	else {
-        		
+        		if (buttonPressed.equals("sin")){
+        			String temp = "";
+        			double sin = 0;
+        			if ((pilaNum.size() == 0) && (value.equals(""))){
+        				sin = Math.sin(Math.toRadians(0));
+    				} else {
+    					if ((pilaNum.size() == 0) && (!value.equals(""))) {
+    						sin = Math.sin(Math.toRadians(Float.parseFloat(value)));
+    					}
+    					else {
+    						pilaNum.add(value);
+    						temp = brainCalculator();
+    						sin = Math.sin(Math.toRadians(Float.parseFloat(temp)));    						
+    					}
+    				}
+        			mCalculatorDisplay.setText(String.valueOf(sin));
+					value = String.valueOf(sin);
+					pilaNum.clear();
+	        		pilaOp.clear();
+	        		jump = true;
+        		}
+        		if (buttonPressed.equals("cos")){
+        			String temp = "";
+        			double cos = 0;
+        			if ((pilaNum.size() == 0) && (value.equals(""))){
+        				cos = Math.cos(Math.toRadians(0));
+    				} else {
+    					if ((pilaNum.size() == 0) && (!value.equals(""))) {
+    						cos = Math.cos(Math.toRadians(Float.parseFloat(value)));
+    					}
+    					else {
+    						pilaNum.add(value);
+    						temp = brainCalculator();
+    						cos = Math.cos(Math.toRadians(Float.parseFloat(temp)));    						
+    					}
+    				}
+        			mCalculatorDisplay.setText(String.valueOf(cos));
+					value = String.valueOf(cos);
+					pilaNum.clear();
+	        		pilaOp.clear();
+	        		jump = true;
+        		}
+        		if (buttonPressed.equals("tan")){
+        			String temp = "";
+        			double tan = 0;
+        			if ((pilaNum.size() == 0) && (value.equals(""))){
+        				tan = Math.tan(Math.toRadians(0));
+    				} else {
+    					if ((pilaNum.size() == 0) && (!value.equals(""))) {
+    						tan = Math.tan(Math.toRadians(Float.parseFloat(value)));
+    					}
+    					else {
+    						pilaNum.add(value);
+    						temp = brainCalculator();
+    						tan = Math.tan(Math.toRadians(Float.parseFloat(temp)));    						
+    					}
+    				}
+        			mCalculatorDisplay.setText(String.valueOf(tan));
+					value = String.valueOf(tan);
+					pilaNum.clear();
+	        		pilaOp.clear();
+	        		jump = true;
+        		}
         		if (buttonPressed.equals("=")){
         			if (!value.equals("")){
         				pilaNum.add(value);
@@ -145,13 +198,16 @@ public class MainActivity extends Activity implements OnClickListener {
         		}else{
         			// operation was pressed
         			if (userIsInTheMiddleOfTypingANumber) {
+        				if (jump) {
+        					jump = false;
+        				}else {
+        					pilaNum.add(value);
+        					pilaOp.add(buttonPressed);
+        					value = "";        				
         				
-        				pilaNum.add(value);
-        				pilaOp.add(buttonPressed);
-        				value = "";        				
-        				
-        				mCalculatorDisplay.append(" " + buttonPressed + " ");
-        				userIsInTheMiddleOfTypingANumber = false;
+        					mCalculatorDisplay.append(" " + buttonPressed + " ");
+        					userIsInTheMiddleOfTypingANumber = false;
+        				}
         			}
         		}
         	}

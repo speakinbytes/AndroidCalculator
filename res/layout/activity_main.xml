@@ -48,7 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".25"
-            android:text="@string/buttonToggleSign"
+            android:text="@string/buttonUnasigned"
             android:textSize="25sp" />
  
         <Button
